@@ -10,7 +10,7 @@ app = FastAPI()
 # connected api_router
 app.include_router(api_router)
 
-app.middleware(
+app.add_middleware(
     CORSMiddleware,
     allow_origins=[settings.frontend_api_url],
     allow_credentials=True,
