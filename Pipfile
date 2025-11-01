@@ -8,6 +8,10 @@ fastapi = "*"
 uvicorn = "*"
 sqlalchemy = {extras = ["asyncio"], version = "*"}
 psycopg = {extras = ["binary"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "==1.7.4"}
+bcrypt = "==4.0.1"
+alembic = "*"
+python-jose = {extras = ["cryptography"], version = "*"}
 
 [dev-packages]
 
