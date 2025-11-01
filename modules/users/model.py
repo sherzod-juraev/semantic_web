@@ -1,0 +1,17 @@
+from datetime import datetime, timezone
+from sqlalchemy import String, Text, DateTime
+from sqlalchemy.dialects.postgresql import UUID as db_uuid
+from sqlalchemy.orm import mapped_column, Mapped
+from uuid import UUID, uuid4
+from database import Base
+
+
+class User(Base):
+    __tablename__ = 'users'
+
+    id: Mapped[UUID] = mapped_column(db_uuid(as_uuid=True), primary_key=True, default=uuid4)
+    username: Mapped[str] = mapped_column(String(50), index=True, unique=True, nullable=False)
+    password: Mapped[str] = mapped_column(Text, nullable=False)
+    email: Mapped[str | None] = mapped_column(String(200), unique=True, nullable=True)
+    full_name: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.now(timezone.utc))
