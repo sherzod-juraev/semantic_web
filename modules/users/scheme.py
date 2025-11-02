@@ -2,6 +2,16 @@ from re import match
 from pydantic import BaseModel, Field, field_validator, EmailStr
 from uuid import UUID
 
+
+class TokenResponse(BaseModel):
+    model_config = {
+        'extra': 'forbid'
+    }
+
+    access_token: str
+    token_type: str = 'bearer'
+
+
 class UserResponse(BaseModel):
     model_config = {
         'from_attributes': True
