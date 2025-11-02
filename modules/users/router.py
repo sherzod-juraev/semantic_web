@@ -23,6 +23,7 @@ async def create_user(
         user_scheme: Annotated[OAuth2PasswordRequestForm, Depends()],
         db: Annotated[AsyncSession, Depends(get_db)]
 ) -> TokenResponse:
+    user_scheme = UserPost(username=user_scheme.username, password=user_scheme.password)
     user_db = await crud.create_user(db, user_scheme)
     response.set_cookie(
         key='refresh_token',
