@@ -5,7 +5,7 @@ from core import tag, prefixes
 from .users.router import user_router
 from .nodes.router import node_router
 from .edges.router import edge_router
-from .relationship.router import *
+from .relationship.router import relationship_router
 
 
 # import models
@@ -37,4 +37,10 @@ api_router.include_router(
     edge_router,
     prefix=prefixes.edges,
     tags=[tag.edges]
+)
+
+api_router.include_router(
+    relationship_router,
+    prefix=prefixes.relationship,
+    tags=[tag.relationship]
 )
