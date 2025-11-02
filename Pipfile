@@ -16,6 +16,8 @@ python-dotenv = "*"
 asyncpg = "*"
 pydantic-settings = "*"
 uuid = "*"
+email-validator = "*"
+python-multipart = "*"
 
 [dev-packages]
 

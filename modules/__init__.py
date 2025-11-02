@@ -5,15 +5,17 @@ from core import tag, prefixes
 from .users.router import user_router
 from .nodes.router import node_router
 from .edges.router import edge_router
+from .relationship.router import *
 
 
 # import models
 from .users.model import User
 from .nodes.model import Node
 from .edges.model import Edge
+from .relationship.model import Relationship
 
 
-__all__ = ['User', 'Node', 'Edge']
+__all__ = ['User', 'Node', 'Edge', 'Relationship']
 
 
 api_router = APIRouter()
