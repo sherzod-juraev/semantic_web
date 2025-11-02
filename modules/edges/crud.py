@@ -52,10 +52,11 @@ async def delete_edge(
         /
 ) -> None:
     edge_db = await verify_edge(db, edge_id)
-    db.delete(edge_db)
+    await db.delete(edge_db)
     try:
         await db.commit()
     except IntegrityError:
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='the node has relationships with other tables'
