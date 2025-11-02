@@ -89,7 +89,7 @@ async def verify_username_and_password(
         user_db: User,
         /
 ) -> None:
-    username = user_scheme.username != user_db.username
+    username = user_scheme.username == user_db.username
     password = verify_pass(user_scheme.password, user_db.password)
     if not username and not password:
         raise HTTPException(

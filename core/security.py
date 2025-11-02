@@ -43,7 +43,7 @@ def verify_access_token(access_token: Annotated[str, Depends(oauth2_scheme)]) ->
     try:
         payload = jwt.decode(access_token, settings.secret_key, algorithms=[settings.algorithm])
         auth_id = payload.get('sub')
-        if auth_id:
+        if not auth_id:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail='auth_id not found from access_token'

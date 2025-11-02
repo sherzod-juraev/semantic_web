@@ -1,5 +1,5 @@
 from typing import Annotated
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Request, Response, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -30,7 +30,7 @@ async def create_user(
         value=create_refresh_token(user_db.id),
         secure=False,
         max_age=60 * 60 * 24 * settings.refresh_token_days,
-        expires=datetime.utcnow() + timedelta(days=settings.refresh_token_days),
+        expires=datetime.now(timezone.utc) + timedelta(days=settings.refresh_token_days),
         httponly=True
     )
     token = TokenResponse(
@@ -48,7 +48,6 @@ async def create_user(
 async def access_token_updated(
         request: Request,
         response: Response,
-        db: Annotated[AsyncSession, Depends(get_db)]
 ) -> TokenResponse:
     refresh_token = request.cookies.get('refresh_token')
     user_id = verify_refresh_token(refresh_token)
@@ -57,7 +56,7 @@ async def access_token_updated(
         value=create_refresh_token(user_id),
         secure=False,
         max_age=60 * 60 * 24 * settings.refresh_token_days,
-        expires=datetime.utcnow() + timedelta(days=settings.refresh_token_days),
+        expires=datetime.now(timezone.utc) + timedelta(days=settings.refresh_token_days),
         httponly=True
     )
     token = TokenResponse(

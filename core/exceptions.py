@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import ResponseValidationError, RequestValidationError
 from fastapi.responses import JSONResponse
+from pydantic import ValidationError
 from sqlalchemy.exc import TimeoutError
 
 def register_exception_handler(app: FastAPI, /):
@@ -31,4 +32,17 @@ def register_exception_handler(app: FastAPI, /):
                 'detail': 'Error in request',
                 'body': exc.errors()
             }
+        )
+
+    @app.exception_handler(ValidationError)
+    async def validation_error_handler(request: Request, exc: ValidationError):
+        errors = []
+        for err in exc.errors():
+            errors.append({
+                "field": err["loc"][-1],
+                "message": err["msg"]
+            })
+        return JSONResponse(
+            status_code=422,
+            content={"detail": errors}
         )

@@ -28,6 +28,7 @@ async def create_node(
         /
 ) -> Node:
     node_db = Node(label=node_scheme.label)
+    db.add(node_db)
     node_db = await save_to_db(db, node_db)
     return node_db
 
