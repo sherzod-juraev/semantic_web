@@ -15,6 +15,7 @@ class Edge(Base):
 
     relationship_edges: Mapped['Relationship'] = relationship(
         'Relationship',
+        foreign_keys='Relationship.edge_id',
         back_populates='edge',
         lazy='noload'
     )
