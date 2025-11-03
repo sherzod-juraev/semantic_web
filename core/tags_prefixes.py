@@ -7,6 +7,7 @@ class Tags(BaseModel):
     nodes: str = 'Nodes'
     edges: str = 'Edges'
     relationship: str = 'Relationship'
+    chats: str = 'Chats'
 
 
 # prefixes for FastAPI
@@ -16,6 +17,7 @@ class Prefixes(BaseModel):
     nodes: str = '/nodes'
     edges: str = '/edges'
     relationship: str = '/relationship'
+    chats: str = '/chats'
 
 
 tag = Tags()
