@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from database import get_db
 from uuid import UUID
-from . import Content, ContentPost, ContentResponse, crud
+from . import Content, ContentPost, ContentResponse, crud, answer_to_question
 
 
 content_router = APIRouter()
@@ -13,14 +13,16 @@ content_router = APIRouter()
     '/',
     summary='Create content',
     status_code=status.HTTP_201_CREATED,
-    response_model=ContentResponse
+    response_model=list[str]
 )
 async def create_content(
         content_scheme: ContentPost,
         db: Annotated[AsyncSession, Depends(get_db)]
-) -> Content:
+) -> list[str]:
     content_db = await crud.create_content(db, content_scheme)
-    return content_db
+    answer_list = await answer_to_question(db, content_scheme.title)
+
+    return answer_list
 
 
 @content_router.get(
