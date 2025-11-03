@@ -1,5 +1,5 @@
-from fastapi import APIRouter
-from core import tag, prefixes
+from fastapi import APIRouter, Depends
+from core import tag, prefixes, verify_access_token
 
 # import routers
 from .users.router import user_router
@@ -58,5 +58,6 @@ api_router.include_router(
 api_router.include_router(
     content_router,
     prefix=prefixes.contents,
-    tags=[tag.contents]
+    tags=[tag.contents],
+    dependencies=[Depends(verify_access_token)]
 )
