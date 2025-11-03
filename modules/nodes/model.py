@@ -15,12 +15,14 @@ class Node(Base):
 
     relationship_nodes1: Mapped['Relationship'] = relationship(
         'Relationship',
+        foreign_keys='Relationship.node1_id',
         back_populates='node1',
         lazy='noload'
     )
 
     relationship_nodes2: Mapped['Relationship'] = relationship(
         'Relationship',
+        foreign_keys='Relationship.node2_id',
         back_populates='node2',
         lazy='noload'
     )
