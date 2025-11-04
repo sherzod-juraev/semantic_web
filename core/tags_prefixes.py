@@ -9,6 +9,7 @@ class Tags(BaseModel):
     relationship: str = 'Relationship'
     chats: str = 'Chats'
     contents: str = 'Contents'
+    filters: str = 'Filters'
 
 
 # prefixes for FastAPI
@@ -20,6 +21,7 @@ class Prefixes(BaseModel):
     relationship: str = '/relationship'
     chats: str = '/chats'
     contents: str = '/contents'
+    filters: str = '/filters'
 
 
 tag = Tags()

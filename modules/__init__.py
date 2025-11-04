@@ -8,6 +8,7 @@ from .edges.router import edge_router
 from .relationship.router import relationship_router
 from .chats.router import chat_router
 from .contents.router import content_router
+from .filters.router import filter_router
 
 
 # import models
@@ -17,9 +18,10 @@ from .edges.model import Edge
 from .relationship.model import Relationship
 from .chats.model import Chat
 from .contents.model import Content
+from .filters.model import Filter
 
 
-__all__ = ['User', 'Node', 'Edge', 'Relationship', 'Chat', 'Content']
+__all__ = ['User', 'Node', 'Edge', 'Relationship', 'Chat', 'Content', 'Filter']
 
 
 api_router = APIRouter()
@@ -60,4 +62,10 @@ api_router.include_router(
     prefix=prefixes.contents,
     tags=[tag.contents],
     dependencies=[Depends(verify_access_token)]
+)
+
+api_router.include_router(
+    filter_router,
+    prefix=prefixes.filters,
+    tags=[tag.filters]
 )
