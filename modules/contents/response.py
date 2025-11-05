@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from ..relationship import Relationship
+from ..filters.model import Filter
 
 
 async def answer_to_question(
@@ -20,6 +21,7 @@ async def answer_to_question(
             answer_list.append(f'{relationships[i].node2.label} {relationships[i].edge.label}')
             await verify_nested_nodes(relationships[i].node2_id, relationships, length, answer_list)
     if answer_list:
+        answer_list = await filter_the_response(db, answer_list)
         return answer_list
     await to_form_analogies(label, relationships, length, answer_list)
     if not answer_list:
@@ -49,3 +51,23 @@ async def to_form_analogies(
                     answer_list.append(relationships[i].node1.label)
             else:
                 answer_list.append(relationships[i].node1.label)
+
+
+async def filter_the_response(
+        db: AsyncSession,
+        answer_list: list,
+        /
+) -> list[str]:
+    query = select(Filter)
+    result = await db.execute(query)
+    filters = result.scalars().all()
+    filter_length = len(filters)
+    response_list = answer_list.copy()
+    for i in range(filter_length):
+        for j in range(len(answer_list)):
+            if filters[i].label in answer_list[j]:
+                a = answer_list[j].replace(filters[i].label, '')
+                for k in range(len(answer_list)):
+                    if filters[i].negative_label in answer_list[k] and a == answer_list[k].replace(filters[i].negative_label, ''):
+                        response_list.remove(f'{a}{filters[i].label}')
+    return response_list
